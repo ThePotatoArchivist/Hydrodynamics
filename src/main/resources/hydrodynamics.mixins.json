@@ -3,7 +3,7 @@
 	"package": "archives.tater.hydrodynamics.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"ExampleMixin"
+      "EntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

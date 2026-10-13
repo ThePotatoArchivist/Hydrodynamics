@@ -7,14 +7,19 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricEntityLootSubProvider;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 import java.util.concurrent.CompletableFuture;
 
+import static net.minecraft.advancements.predicates.MinMaxBounds.Ints.exactly;
+import static net.minecraft.advancements.predicates.entity.CubeMobPredicate.sized;
+import static net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity;
 import static net.minecraft.world.level.storage.loot.LootPool.lootPool;
 import static net.minecraft.world.level.storage.loot.LootTable.lootTable;
 import static net.minecraft.world.level.storage.loot.entries.LootItem.lootTableItem;
 import static net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction.lootingMultiplier;
 import static net.minecraft.world.level.storage.loot.functions.SetItemCountFunction.setCount;
+import static net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition.hasProperties;
 import static net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders.between;
 import static net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders.between;
 
@@ -31,6 +36,7 @@ public class ModEntityLootProvider extends FabricEntityLootSubProvider {
                                 .apply(setCount(between(0, 2)))
                                 .apply(lootingMultiplier(enchantments, between(0f, 1f)))
                         )
+                        .when(hasProperties(LootContext.EntityTarget.THIS, entity().cubeMob(sized(exactly(1)))))
                 )
         );
     }

@@ -1,10 +1,10 @@
 {
   "type": "minecraft:entity_properties",
-  "entity": "this",
+  "entity": "target_entity",
   "predicate": {
     "minecraft:type_specific/cube_mob": {
       "size": {
-        "min": 5
+        "max": 5
       }
     }
   }

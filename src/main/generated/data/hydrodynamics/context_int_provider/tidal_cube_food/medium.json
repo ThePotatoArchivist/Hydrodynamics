@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:conditional",
+  "condition": "hydrodynamics:can_feed_tidal_cube",
+  "on_true": {
+    "type": "minecraft:weighted_list",
+    "distribution": [
+      {
+        "data": 1,
+        "weight": 30
+      },
+      {
+        "data": 0,
+        "weight": 70
+      }
+    ]
+  }
+}

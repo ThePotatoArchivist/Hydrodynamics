@@ -1,5 +1,6 @@
 package archives.tater.hydrodynamics;
 
+import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModEntities;
 
 import net.fabricmc.api.ModInitializer;
@@ -24,6 +25,7 @@ public class Hydrodynamics implements ModInitializer {
 		// Proceed with mild caution.
 
 		HydrodynamicsModEntities.init();
+		HydrodynamicsModComponents.init();
 	}
 
 	public static Identifier id(String path) {

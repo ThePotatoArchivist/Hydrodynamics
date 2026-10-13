@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:conditional",
+  "condition": "hydrodynamics:can_feed_tidal_cube",
+  "on_true": 1
+}

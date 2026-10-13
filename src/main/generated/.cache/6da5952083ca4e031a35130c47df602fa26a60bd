@@ -1,0 +1,5 @@
+// 26.3	-999999999-01-01T00:00:00	Hydrodynamics/Tags for minecraft:item
+e1102ee826d5ec0d457c55612bc006b93dfc1ed5 data/hydrodynamics/tags/item/default_tidal_cube_food/always.json
+c02cdfdf6b0588ff01e445989a5adb8277816518 data/hydrodynamics/tags/item/default_tidal_cube_food/high.json
+8503cf7723a73426e2867ae45a5c9a375282ff13 data/hydrodynamics/tags/item/default_tidal_cube_food/low.json
+5064c920d7b5376f105eaf34362558aa85841563 data/hydrodynamics/tags/item/default_tidal_cube_food/medium.json

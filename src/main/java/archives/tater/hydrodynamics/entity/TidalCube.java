@@ -9,14 +9,20 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.monster.cubemob.AbstractCubeMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -27,11 +33,21 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
-import static java.lang.Math.max;
+import static java.lang.Math.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
+import static net.minecraft.util.Mth.*;
+import static net.minecraft.util.Mth.atan2;
+import static net.minecraft.util.Mth.clamp;
+import static net.minecraft.util.Mth.cos;
+import static net.minecraft.util.Mth.sin;
 
 public class TidalCube extends AbstractCubeMob {
     public TidalCube(EntityType<? extends TidalCube> type, Level level) {
         super(type, level);
+        setPathfindingMalus(PathType.WATER, 0.0F);
+        moveControl = new TidalCubeMoveControl(this, 5, 15, 1F, true);
+        navigation = new AmphibiousPathNavigation(this, level);
     }
 
     @Override
@@ -112,8 +128,14 @@ public class TidalCube extends AbstractCubeMob {
     }
 
     @Override
-    protected void addBehaviourGoals() {
+    protected void registerGoals() {
+        goalSelector.addGoal(1, new CubeMobSwimmingGoal(this, 1, 40));
+        goalSelector.addGoal(4, new CubeMobRandomDirectionGoal(this));
+        goalSelector.addGoal(5, new CubeMobKeepOnJumpingGoal(this));
+    }
 
+    @Override
+    protected void addBehaviourGoals() {
     }
 
     @Override
@@ -160,6 +182,16 @@ public class TidalCube extends AbstractCubeMob {
         return super.isImmobile() || getLeashHolder() != null && getLeashHolder().supportQuadLeashAsHolder();
     }
 
+    @Override
+    public boolean checkSpawnObstruction(final LevelReader level) {
+        return level.isUnobstructed(this);
+    }
+
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
+    }
+
     // TODO unique sounds
 
     @Override
@@ -184,5 +216,79 @@ public class TidalCube extends AbstractCubeMob {
 
     public static AttributeSupplier.Builder createSulfurCubeAttributes() {
         return Mob.createMobAttributes();
+    }
+
+    private static class CubeMobSwimmingGoal extends RandomSwimmingGoal {
+
+        public CubeMobSwimmingGoal(PathfinderMob mob, double speedModifier, int interval) {
+            super(mob, speedModifier, interval);
+        }
+
+        @Override
+        public boolean canUse() {
+            return mob.isInWater() && super.canUse();
+        }
+    }
+
+    /// @see net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl
+    private static class TidalCubeMoveControl extends AbstractCubeMob.CubeMobMoveControl<TidalCube> {
+        private final int maxTurnX;
+        private final int maxTurnY;
+        private final float inWaterSpeedModifier;
+        private final boolean applyGravity;
+
+        public TidalCubeMoveControl(TidalCube mob, int maxTurnX, int maxTurnY, float inWaterSpeedModifier, boolean applyGravity) {
+            super(mob);
+            this.maxTurnX = maxTurnX;
+            this.maxTurnY = maxTurnY;
+            this.inWaterSpeedModifier = inWaterSpeedModifier;
+            this.applyGravity = applyGravity;
+        }
+
+        @Override
+        public void tick() {
+            if (!mob.isInWater()) {
+                super.tick();
+                return;
+            }
+
+            if (applyGravity && mob.isEyeInFluid(FluidTags.WATER)) {
+                mob.setDeltaMovement(mob.getDeltaMovement().add(0.0F, 0.005, 0.0F));
+            }
+
+            if (operation != Operation.MOVE_TO || mob.getNavigation().isDone()) {
+                mob.setSpeed(0.0F);
+                mob.setXxa(0.0F);
+                mob.setYya(0.0F);
+                mob.setZza(0.0F);
+                return;
+            }
+
+            double xd = wantedX - mob.getX();
+            double yd = wantedY - mob.getY();
+            double zd = wantedZ - mob.getZ();
+            double dd = xd * xd + yd * yd + zd * zd;
+            if (dd < EPSILON) {
+                mob.setZza(0.0F);
+                return;
+            }
+            float yRotD = (float)(atan2(zd, xd) * RAD_TO_DEG) - 90.0F;
+            mob.setYRot(rotlerp(mob.getYRot(), yRotD, maxTurnY));
+            mob.yBodyRot = mob.getYRot();
+            mob.yHeadRot = mob.getYRot();
+            float speed = (float)(speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            mob.setSpeed(speed * inWaterSpeedModifier);
+            double sqrt = sqrt(xd * xd + zd * zd);
+            if (abs(yd) > EPSILON || abs(sqrt) > EPSILON) {
+                float xRotD = -((float)(atan2(yd, sqrt) * RAD_TO_DEG));
+                xRotD = clamp(wrapDegrees(xRotD), -maxTurnX, maxTurnX);
+                mob.setXRot(rotateTowards(mob.getXRot(), xRotD, 5.0F));
+            }
+
+            float cos = cos(mob.getXRot() * DEG_TO_RAD);
+            float sin = sin(mob.getXRot() * DEG_TO_RAD);
+            mob.zza = cos * speed;
+            mob.yya = -sin * speed;
+        }
     }
 }

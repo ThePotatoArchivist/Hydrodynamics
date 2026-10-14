@@ -20,6 +20,8 @@ loom {
 			sourceSet sourceSets.client
 		}
 	}
+
+	accessWidenerPath = file("src/main/resources/hydrodynamics.classtweaker")
 }
 
 fabricApi {

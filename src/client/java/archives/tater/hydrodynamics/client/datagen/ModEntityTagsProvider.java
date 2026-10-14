@@ -25,6 +25,9 @@ public class ModEntityTagsProvider extends FabricTagsProvider.EntityTypeTagsProv
         builder(EntityTypeTags.AQUATIC)
                 .add(HydrodynamicsModEntityIds.TIDAL_CUBE);
 
+        builder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
+                .add(HydrodynamicsModEntityIds.TIDAL_CUBE);
+
         builder(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH)
                 .add(HydrodynamicsModEntityIds.TIDAL_CUBE);
 

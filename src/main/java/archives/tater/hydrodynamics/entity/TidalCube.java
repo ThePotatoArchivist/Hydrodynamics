@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.monster.cubemob.AbstractCubeMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -33,10 +35,9 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
-import static java.lang.Math.*;
-import static net.minecraft.util.Mth.RAD_TO_DEG;
-import static net.minecraft.util.Mth.lerp;
-import static net.minecraft.util.Mth.atan2;
+import static java.lang.Math.max;
+import static java.lang.Math.sqrt;
+import static net.minecraft.util.Mth.*;
 
 public class TidalCube extends AbstractCubeMob {
     public TidalCube(EntityType<? extends TidalCube> type, Level level) {
@@ -143,6 +144,10 @@ public class TidalCube extends AbstractCubeMob {
         return false;
     }
 
+    protected void setSpawnSize(final ServerLevelAccessor level, final DifficultyInstance difficulty) {
+        setSize(level.getRandom().nextInt(4), true);
+    }
+
     @Override
     protected int getSplitCount() {
         return 2;
@@ -210,7 +215,7 @@ public class TidalCube extends AbstractCubeMob {
         return SoundEvents.SLIME_SQUISH;
     }
 
-    public static AttributeSupplier.Builder createSulfurCubeAttributes() {
+    public static AttributeSupplier.Builder createTidalCubeAttributes() {
         return Mob.createMobAttributes();
     }
 

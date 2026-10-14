@@ -24,7 +24,7 @@ public interface HydrodynamicsModEntities {
     );
 
     static void init() {
-        FabricDefaultAttributeRegistry.register(TIDAL_CUBE, TidalCube.createSulfurCubeAttributes());
+        FabricDefaultAttributeRegistry.register(TIDAL_CUBE, TidalCube.createTidalCubeAttributes());
     }
 }
 

@@ -7,7 +7,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.material.Fluid;
 
 import org.jspecify.annotations.Nullable;
 
@@ -25,5 +28,13 @@ public abstract class EntityMixin {
 	)
 	private boolean tidalCubeIsWater(boolean original) {
 		return original || getVehicle() instanceof TidalCube;
+	}
+
+	@ModifyReturnValue(
+			method = "isEyeInFluid",
+			at = @At("RETURN")
+	)
+	private boolean tidalCubeIsWater(boolean original, TagKey<Fluid> type) {
+		return original || type == FluidTags.WATER && getVehicle() instanceof TidalCube;
 	}
 }

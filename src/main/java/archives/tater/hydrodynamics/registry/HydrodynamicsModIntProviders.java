@@ -36,7 +36,7 @@ public interface HydrodynamicsModIntProviders {
 
     private static ContextIntProvider tidalCubeFood(HolderGetter<LootItemCondition> predicates, int layerIncreaseChance) {
         return new ConditionalValue(
-                predicates.getOrThrow(HydrodyamicsModPredicates.CAN_FEED_TIDAL_CUBE),
+                predicates.getOrThrow(HydrodynamicsModPredicates.CAN_FEED_TIDAL_CUBE),
                 layerIncreaseChance >= 100
                         ? exactly(1)
                         : weighted(WeightedList.<Holder<ContextIntProvider>>builder()

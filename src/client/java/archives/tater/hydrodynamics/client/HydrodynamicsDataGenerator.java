@@ -1,7 +1,7 @@
 package archives.tater.hydrodynamics.client;
 
 import archives.tater.hydrodynamics.client.datagen.*;
-import archives.tater.hydrodynamics.registry.HydrodyamicsModPredicates;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModPredicates;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModIntProviders;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -16,7 +16,7 @@ public class HydrodynamicsDataGenerator implements DataGeneratorEntrypoint {
 	@Override
 	public void buildReloadableRegistry(RegistrySetBuilder registryBuilder) {
 		registryBuilder.add(Registries.CONTEXT_INT_PROVIDER, HydrodynamicsModIntProviders::bootstrap);
-		registryBuilder.add(Registries.PREDICATE, HydrodyamicsModPredicates::bootstrap);
+		registryBuilder.add(Registries.PREDICATE, HydrodynamicsModPredicates::bootstrap);
 	}
 
 	@Override

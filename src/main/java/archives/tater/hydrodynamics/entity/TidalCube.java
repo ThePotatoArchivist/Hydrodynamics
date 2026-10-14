@@ -1,8 +1,9 @@
 package archives.tater.hydrodynamics.entity;
 
-import archives.tater.hydrodynamics.registry.HydrodyamicsModPredicates;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModEntityTags;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModEnvironment;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModPredicates;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -74,7 +75,7 @@ public class TidalCube extends AbstractCubeMob {
                     .create(LootContextParamSets.ENTITY_INTERACT)
             ).create(Optional.empty());
 
-            if (!serverLevel.getServer().reloadableRegistries().lookup().getOrThrow(HydrodyamicsModPredicates.CAN_FEED_TIDAL_CUBE).value().test(context))
+            if (!serverLevel.getServer().reloadableRegistries().lookup().getOrThrow(HydrodynamicsModPredicates.CAN_FEED_TIDAL_CUBE).value().test(context))
                 return InteractionResult.FAIL;
 
             setSize(getSize() + food.sizes().get(context, 0), true);
@@ -99,6 +100,15 @@ public class TidalCube extends AbstractCubeMob {
 
         if (random.nextInt(2 * max(1, 6 - getSize())) == 0) // bigger slimes drip more because they have a wider base
             level().addParticle(ParticleTypes.FALLING_WATER, getRandomX(getBbWidth() / 4), getY(), getRandomZ(getBbWidth() / 4), 0, 0, 0);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+
+        if (level() instanceof ServerLevel serverLevel)
+            if (serverLevel.environmentAttributes().getValue(HydrodynamicsModEnvironment.TIDAL_CUBE_EVAPORATES, position()))
+                hurtServer(serverLevel, damageSources().onFire(), 1.0F);
     }
 
     private void collectPassenger() {

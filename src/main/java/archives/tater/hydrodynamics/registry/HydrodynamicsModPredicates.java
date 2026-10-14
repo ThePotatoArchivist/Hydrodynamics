@@ -13,7 +13,7 @@ import static net.minecraft.advancements.predicates.entity.CubeMobPredicate.size
 import static net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity;
 import static net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition.hasProperties;
 
-public interface HydrodyamicsModPredicates {
+public interface HydrodynamicsModPredicates {
 
     private static ResourceKey<LootItemCondition> create(String path) {
         return ResourceKey.create(Registries.PREDICATE, Hydrodynamics.id(path));

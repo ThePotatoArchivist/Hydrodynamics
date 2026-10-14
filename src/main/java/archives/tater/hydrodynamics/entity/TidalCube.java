@@ -19,9 +19,11 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.monster.cubemob.AbstractCubeMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -34,7 +36,9 @@ import net.minecraft.world.phys.Vec3;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static java.lang.Math.max;
 import static java.lang.Math.sqrt;
@@ -108,7 +112,7 @@ public class TidalCube extends AbstractCubeMob {
 
         if (level() instanceof ServerLevel serverLevel)
             if (serverLevel.environmentAttributes().getValue(HydrodynamicsModEnvironment.TIDAL_CUBE_EVAPORATES, position()))
-                hurtServer(serverLevel, damageSources().onFire(), 1.0F);
+                hurtServer(serverLevel, damageSources().dryOut(), 1.0F);
     }
 
     private void collectPassenger() {
@@ -142,7 +146,8 @@ public class TidalCube extends AbstractCubeMob {
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(1, new CubeMobSwimmingGoal(this, 1, 40));
+        goalSelector.addGoal(2, new TidalCubeTemptGoal(this, 1, stack -> stack.has(HydrodynamicsModComponents.TIDAL_CUBE_FOOD), false, 1));
+        goalSelector.addGoal(3, new CubeMobSwimmingGoal(this, 1, 40));
         goalSelector.addGoal(4, new CubeMobRandomDirectionGoal(this));
         goalSelector.addGoal(5, new CubeMobKeepOnJumpingGoal(this));
     }
@@ -232,7 +237,25 @@ public class TidalCube extends AbstractCubeMob {
     }
 
     public static AttributeSupplier.Builder createTidalCubeAttributes() {
-        return Mob.createMobAttributes();
+        return Mob.createMobAttributes().add(Attributes.TEMPT_RANGE, 8);
+    }
+
+    private static class TidalCubeTemptGoal extends TemptGoal.ForNonPathfinders {
+        public TidalCubeTemptGoal(final Mob mob, final double speedModifier, final Predicate<ItemStack> items, final boolean canScare, final double stopDistance) {
+            super(mob, speedModifier, items, canScare, stopDistance);
+            this.setFlags(EnumSet.of(Flag.LOOK));
+        }
+
+        protected void stopNavigation() {
+            if (mob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl<?> cubeMobMoveControl)
+                cubeMobMoveControl.setWantedMovement(0);
+        }
+
+        protected void navigateTowards(final Player player) {
+            this.mob.lookAt(player, 10.0F, 10.0F);
+            if (mob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl<?> cubeMobMoveControl)
+                cubeMobMoveControl.setDirection(mob.getYRot(), true);
+        }
     }
 
     private static class CubeMobSwimmingGoal extends RandomSwimmingGoal {

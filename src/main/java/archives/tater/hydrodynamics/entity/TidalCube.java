@@ -125,6 +125,12 @@ public class TidalCube extends AbstractCubeMob {
     }
 
     @Override
+    public void die(DamageSource source) {
+        ejectPassengers();
+        super.die(source);
+    }
+
+    @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new CubeMobSwimmingGoal(this, 1, 40));
         goalSelector.addGoal(4, new CubeMobRandomDirectionGoal(this));

@@ -41,7 +41,7 @@ public interface HydrodynamicsModComponents {
             tidalCubeFood(context, HydrodynamicsModItemTags.DEFAULT_TIDAL_CUBE_FOOD_LOW, HydrodynamicsModIntProviders.TIDAL_CUBE_FOOD_LOW);
             tidalCubeFood(context, HydrodynamicsModItemTags.DEFAULT_TIDAL_CUBE_FOOD_MEDIUM, HydrodynamicsModIntProviders.TIDAL_CUBE_FOOD_MEDIUM);
             tidalCubeFood(context, HydrodynamicsModItemTags.DEFAULT_TIDAL_CUBE_FOOD_HIGH, HydrodynamicsModIntProviders.TIDAL_CUBE_FOOD_HIGH);
-            tidalCubeFood(context, HydrodynamicsModItemTags.DEFAULT_TIDAL_CUBE_FOOD_ALWAYS, new TidalCubeFood(ResolvableInt.fromKey(HydrodynamicsModIntProviders.TIDAL_CUBE_FOOD_ALWAYS), false));
+            tidalCubeFood(context, HydrodynamicsModItemTags.DEFAULT_TIDAL_CUBE_FOOD_ALWAYS_REUSABLE, new TidalCubeFood(ResolvableInt.fromKey(HydrodynamicsModIntProviders.TIDAL_CUBE_FOOD_ALWAYS), false));
         });
     }
 
@@ -50,10 +50,10 @@ public interface HydrodynamicsModComponents {
     }
 
     @SuppressWarnings("deprecation")
-    private static void tidalCubeFood(DefaultItemComponentEvents.ModifyContext context, TagKey<Item> defaultTidalCubeFoodAlways, TidalCubeFood TIDAL_CUBE_FOOD_ALWAYS) {
+    private static void tidalCubeFood(DefaultItemComponentEvents.ModifyContext context, TagKey<Item> tag, TidalCubeFood food) {
         context.modify(
-                item -> item.builtInRegistryHolder().is(defaultTidalCubeFoodAlways), (builder, _) ->
-                        builder.set(HydrodynamicsModComponents.TIDAL_CUBE_FOOD, TIDAL_CUBE_FOOD_ALWAYS)
+                item -> item.builtInRegistryHolder().is(tag), (builder, _) ->
+                        builder.set(HydrodynamicsModComponents.TIDAL_CUBE_FOOD, food)
         );
     }
 }

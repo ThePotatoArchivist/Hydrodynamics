@@ -48,5 +48,11 @@ public class ModEntityTagsProvider extends FabricTagsProvider.EntityTypeTagsProv
 
         builder(HydrodynamicsModEntityTags.NON_SITTING_MOUNT)
                 .add(HydrodynamicsModEntityIds.TIDAL_CUBE);
+
+        builder(HydrodynamicsModEntityTags.SUBMERGES_PASSENGERS)
+                .add(HydrodynamicsModEntityIds.TIDAL_CUBE);
+
+        builder(HydrodynamicsModEntityTags.WATER_BREATHING_SUBMERGED_PASSENGER)
+                .addTag(HydrodynamicsModEntityTags.TIDAL_CUBE_CAN_HOLD);
     }
 }

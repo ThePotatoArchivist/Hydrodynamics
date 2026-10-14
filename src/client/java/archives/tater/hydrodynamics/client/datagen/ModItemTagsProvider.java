@@ -50,7 +50,7 @@ public class ModItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
                 .add(BlockItemIds.HORN_CORAL_BLOCK)
                 .forceAddTag(ConventionalItemTags.RAW_FISH_FOODS);
 
-        builder(HydrodynamicsModItemTags.DEFAULT_TIDAL_CUBE_FOOD_ALWAYS)
+        builder(HydrodynamicsModItemTags.DEFAULT_TIDAL_CUBE_FOOD_ALWAYS_REUSABLE)
                 .add(ItemIds.HEART_OF_THE_SEA);
     }
 }

@@ -1,6 +1,5 @@
 package archives.tater.hydrodynamics.mixin;
 
-import archives.tater.hydrodynamics.entity.TidalCube;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModEntityTags;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -17,6 +16,6 @@ public class LivingEntityMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectUtil;hasWaterBreathing(Lnet/minecraft/world/entity/LivingEntity;)Z")
     )
     private boolean noDrown(LivingEntity mob, Operation<Boolean> original) {
-        return original.call(mob) || mob.is(HydrodynamicsModEntityTags.TIDAL_CUBE_CAN_HOLD) && mob.getVehicle() instanceof TidalCube;
+        return original.call(mob) || mob.is(HydrodynamicsModEntityTags.WATER_BREATHING_SUBMERGED_PASSENGER) && mob.getVehicle() != null && mob.getVehicle().is(HydrodynamicsModEntityTags.SUBMERGES_PASSENGERS);
     }
 }

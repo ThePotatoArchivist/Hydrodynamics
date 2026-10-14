@@ -1,6 +1,6 @@
 package archives.tater.hydrodynamics.mixin;
 
-import archives.tater.hydrodynamics.entity.TidalCube;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModEntityTags;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,15 +26,15 @@ public abstract class EntityMixin {
 			},
 			at = @At("RETURN")
 	)
-	private boolean tidalCubeIsWater(boolean original) {
-		return original || getVehicle() instanceof TidalCube;
+	private boolean submergePassenger(boolean original) {
+		return original || getVehicle() != null && getVehicle().is(HydrodynamicsModEntityTags.SUBMERGES_PASSENGERS);
 	}
 
 	@ModifyReturnValue(
 			method = "isEyeInFluid",
 			at = @At("RETURN")
 	)
-	private boolean tidalCubeIsWater(boolean original, TagKey<Fluid> type) {
-		return original || type == FluidTags.WATER && getVehicle() instanceof TidalCube;
+	private boolean submergePassenger(boolean original, TagKey<Fluid> type) {
+		return original || type == FluidTags.WATER && getVehicle() != null && getVehicle().is(HydrodynamicsModEntityTags.SUBMERGES_PASSENGERS);
 	}
 }

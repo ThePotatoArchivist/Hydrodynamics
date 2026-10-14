@@ -15,4 +15,6 @@ public interface HydrodynamicsModEntityTags {
     TagKey<EntityType<?>> TIDAL_CUBE_CAN_HOLD = create("tidal_cube_can_hold");
     TagKey<EntityType<?>> REQUIRES_LARGER_TIDAL_CUBE = create("requires_larger_tidal_cube");
     TagKey<EntityType<?>> NON_SITTING_MOUNT = create("non_sitting_mount");
+    TagKey<EntityType<?>> SUBMERGES_PASSENGERS = create("submerges_passengers");
+    TagKey<EntityType<?>> WATER_BREATHING_SUBMERGED_PASSENGER = create("water_breathing_submerged_passenger");
 }

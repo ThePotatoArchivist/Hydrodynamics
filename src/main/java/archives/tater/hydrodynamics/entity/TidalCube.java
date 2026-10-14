@@ -26,6 +26,8 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
+import static java.lang.Math.max;
+
 public class TidalCube extends AbstractCubeMob {
     public TidalCube(EntityType<? extends TidalCube> type, Level level) {
         super(type, level);
@@ -55,6 +57,15 @@ public class TidalCube extends AbstractCubeMob {
         serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY(0.5), getZ(), 8, getBbWidth() / 2, getBbHeight() / 2, getBbWidth() / 2, 0.0);
 
         return InteractionResult.SUCCESS_SERVER;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide() || onGround()) return;
+
+        if (random.nextInt(2 * max(1, 6 - getSize())) == 0) // bigger slimes drip more because they have a wider base
+            level().addParticle(ParticleTypes.FALLING_WATER, getRandomX(getBbWidth() / 4), getY(), getRandomZ(getBbWidth() / 4), 0, 0, 0);
     }
 
     @Override

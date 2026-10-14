@@ -1,9 +1,6 @@
 package archives.tater.hydrodynamics.client;
 
-import archives.tater.hydrodynamics.client.datagen.ModEntityLootProvider;
-import archives.tater.hydrodynamics.client.datagen.ModItemTagsProvider;
-import archives.tater.hydrodynamics.client.datagen.ModLanguageProvider;
-import archives.tater.hydrodynamics.client.datagen.BuiltRegistryProvider;
+import archives.tater.hydrodynamics.client.datagen.*;
 import archives.tater.hydrodynamics.registry.HydrodyamicsModPredicates;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModIntProviders;
 
@@ -34,5 +31,6 @@ public class HydrodynamicsDataGenerator implements DataGeneratorEntrypoint {
 		)));
 		pack.addProvider(ModItemTagsProvider::new);
 		pack.addProvider(ModEntityLootProvider::new);
+		pack.addProvider(ModEntityTagsProvider::new);
 	}
 }

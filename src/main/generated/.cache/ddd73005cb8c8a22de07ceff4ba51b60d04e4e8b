@@ -1,3 +1,5 @@
 // 26.3	-999999999-01-01T00:00:00	Hydrodynamics/Model Definitions
 8aeb32577948760ea974e22995981eae87c52dbc assets/hydrodynamics/items/tidal_cube_bucket.json
+943a9c4f3b7f7ddc0dfc43eae0359f562f6b2221 assets/hydrodynamics/items/tidal_cube_spawn_egg.json
 1988244c207c77c8f13250fd1785a3fb9fc94186 assets/hydrodynamics/models/item/tidal_cube_bucket.json
+f9f59a88ca748daf5e76cd050e40842afbf7cd14 assets/hydrodynamics/models/item/tidal_cube_spawn_egg.json

@@ -11,5 +11,6 @@ public interface HydrodynamicsModItemIds {
         return ResourceKey.create(Registries.ITEM, Hydrodynamics.id(path));
     }
 
+    ResourceKey<Item> TIDAL_CUBE_SPAWN_EGG = create("tidal_cube_spawn_egg");
     ResourceKey<Item> TIDAL_CUBE_BUCKET = create("tidal_cube_bucket");
 }

@@ -21,6 +21,7 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerators) {
+        itemModelGenerators.generateFlatItem(HydrodynamicsModItems.TIDAL_CUBE_SPAWN_EGG, ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(HydrodynamicsModItems.TIDAL_CUBE_BUCKET, ModelTemplates.FLAT_ITEM);
     }
 }

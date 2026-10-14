@@ -93,7 +93,7 @@ public class TidalCube extends AbstractCubeMob {
 
     private static float getRequiredSize(Entity entity) {
         var size = max(entity.getBbWidth(), entity.getBbHeight());
-        return entity.is(HydrodynamicsModEntityTags.REQUIRES_DOUBLE_SIZE_TIDAL_CUBE) ? size + 0.5f : size;
+        return entity.is(HydrodynamicsModEntityTags.REQUIRES_LARGER_TIDAL_CUBE) ? size + 0.5f : size;
     }
 
     @Override

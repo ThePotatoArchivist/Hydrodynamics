@@ -13,5 +13,5 @@ public interface HydrodynamicsModEntityTags {
     }
 
     TagKey<EntityType<?>> TIDAL_CUBE_CAN_HOLD = create("tidal_cube_can_hold");
-    TagKey<EntityType<?>> REQUIRES_DOUBLE_SIZE_TIDAL_CUBE = create("requires_double_size_tidal_cube");
+    TagKey<EntityType<?>> REQUIRES_LARGER_TIDAL_CUBE = create("requires_larger_tidal_cube");
 }

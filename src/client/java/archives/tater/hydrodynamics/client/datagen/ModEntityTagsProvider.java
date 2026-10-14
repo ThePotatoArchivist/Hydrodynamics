@@ -33,7 +33,7 @@ public class ModEntityTagsProvider extends FabricTagsProvider.EntityTypeTagsProv
                 .add(EntityTypeIds.DROWNED)
                 .add(EntityTypeIds.FROG);
 
-        builder(HydrodynamicsModEntityTags.REQUIRES_DOUBLE_SIZE_TIDAL_CUBE)
+        builder(HydrodynamicsModEntityTags.REQUIRES_LARGER_TIDAL_CUBE)
                 .add(EntityTypeIds.GUARDIAN)
                 .add(EntityTypeIds.ELDER_GUARDIAN)
                 .add(EntityTypeIds.DOLPHIN)

@@ -55,7 +55,7 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
     public TidalCube(EntityType<? extends TidalCube> type, Level level) {
         super(type, level);
         setPathfindingMalus(PathType.WATER, 0f);
-        moveControl = new TidalCubeMoveControl(this);
+        moveControl = new SwimmingCubeMoveControl(this);
         navigation = new AmphibiousPathNavigation(this, level);
     }
 
@@ -309,6 +309,8 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
         return getSize() <= 3 && (itemStack.is(Items.BUCKET) || Bucketable.super.canBePickedUpWithBucket(itemStack));
     }
 
+    /// @see net.minecraft.world.entity.monster.cubemob.SulfurCube.SulfurCubeTemptGoal
+    @SuppressWarnings("JavadocReference")
     private static class TidalCubeTemptGoal extends TemptGoal.ForNonPathfinders {
         public TidalCubeTemptGoal(final Mob mob, final double speedModifier, final Predicate<ItemStack> items, final boolean canScare, final double stopDistance) {
             super(mob, speedModifier, items, canScare, stopDistance);
@@ -341,8 +343,8 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
 
     /// @see net.minecraft.world.entity.animal.fish.AbstractFish.FishMoveControl
     @SuppressWarnings("JavadocReference")
-    private static class TidalCubeMoveControl extends AbstractCubeMob.CubeMobMoveControl<TidalCube> {
-        public TidalCubeMoveControl(TidalCube mob) {
+    private static class SwimmingCubeMoveControl extends AbstractCubeMob.CubeMobMoveControl<TidalCube> {
+        public SwimmingCubeMoveControl(TidalCube mob) {
             super(mob);
         }
 

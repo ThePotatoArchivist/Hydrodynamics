@@ -36,29 +36,44 @@ public class TidalCube extends AbstractCubeMob {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        var holdableLeashed = Leashable.leashableInArea(level(), position(), l -> l.getLeashHolder() == player && canHold((Entity) l));
+        if (!holdableLeashed.isEmpty()) {
+            if (isVehicle()) return InteractionResult.FAIL;
+
+            if (level().isClientSide()) return InteractionResult.SUCCESS;
+
+            var entity = (Entity & Leashable) holdableLeashed.getFirst();
+            entity.dropLeash();
+            entity.startRiding(this);
+
+            return InteractionResult.SUCCESS;
+        }
+
         var stack = player.getItemInHand(hand);
         var food = stack.get(HydrodynamicsModComponents.TIDAL_CUBE_FOOD);
-        if (food == null) return InteractionResult.PASS;
+        if (food != null) {
+            if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.CONSUME;
 
-        if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.CONSUME;
+            var context = new LootContext.Builder(new LootParams.Builder(serverLevel)
+                    .withParameter(LootContextParams.TARGET_ENTITY, this)
+                    .withOptionalParameter(LootContextParams.INTERACTING_ENTITY, player)
+                    .withParameter(LootContextParams.TOOL, stack)
+                    .create(LootContextParamSets.ENTITY_INTERACT)
+            ).create(Optional.empty());
 
-        var context = new LootContext.Builder(new LootParams.Builder(serverLevel)
-                .withParameter(LootContextParams.TARGET_ENTITY, this)
-                .withOptionalParameter(LootContextParams.INTERACTING_ENTITY, player)
-                .withParameter(LootContextParams.TOOL, stack)
-                .create(LootContextParamSets.ENTITY_INTERACT)
-        ).create(Optional.empty());
+            if (!serverLevel.getServer().reloadableRegistries().lookup().getOrThrow(HydrodyamicsModPredicates.CAN_FEED_TIDAL_CUBE).value().test(context))
+                return InteractionResult.FAIL;
 
-        if (!serverLevel.getServer().reloadableRegistries().lookup().getOrThrow(HydrodyamicsModPredicates.CAN_FEED_TIDAL_CUBE).value().test(context))
-            return InteractionResult.FAIL;
+            setSize(getSize() + food.sizes().get(context, 0), true);
+            if (food.consume())
+                stack.consume(1, player);
+            // TODO sound
+            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY(0.5), getZ(), 8, getBbWidth() / 2, getBbHeight() / 2, getBbWidth() / 2, 0.0);
 
-        setSize(getSize() + food.sizes().get(context, 0), true);
-        if (food.consume())
-            stack.consume(1, player);
-        // TODO sound
-        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY(0.5), getZ(), 8, getBbWidth() / 2, getBbHeight() / 2, getBbWidth() / 2, 0.0);
+            return InteractionResult.SUCCESS_SERVER;
+        }
 
-        return InteractionResult.SUCCESS_SERVER;
+        return InteractionResult.PASS;
     }
 
     @Override

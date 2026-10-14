@@ -3,7 +3,7 @@
 	"package": "archives.tater.hydrodynamics.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+      "HumanoidModRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

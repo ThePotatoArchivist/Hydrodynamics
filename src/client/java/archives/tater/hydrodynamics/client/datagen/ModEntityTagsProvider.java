@@ -42,5 +42,8 @@ public class ModEntityTagsProvider extends FabricTagsProvider.EntityTypeTagsProv
                 .add(EntityTypeIds.AXOLOTL)
                 .add(EntityTypeIds.NAUTILUS)
                 .add(EntityTypeIds.ZOMBIE_NAUTILUS);
+
+        builder(HydrodynamicsModEntityTags.NON_SITTING_MOUNT)
+                .add(HydrodynamicsModEntityIds.TIDAL_CUBE);
     }
 }

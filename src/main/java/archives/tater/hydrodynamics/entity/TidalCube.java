@@ -122,7 +122,7 @@ public class TidalCube extends AbstractCubeMob {
 
     @Override
     protected Vec3 getPassengerAttachmentPoint(Entity passenger, EntityDimensions dimensions, float scale) {
-        return new Vec3(0.0, (dimensions.height() - passenger.getBbHeight()) / 2.0, 0.0);
+        return new Vec3(0.0, (dimensions.height() - passenger.getBbHeight()) / 2.0 + passenger.getVehicleAttachmentPoint(this).y, 0.0);
     }
 
     @Override

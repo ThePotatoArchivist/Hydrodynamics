@@ -1,12 +1,15 @@
 package archives.tater.hydrodynamics.entity;
 
-import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModEntityTags;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModEnvironment;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModPredicates;
+import archives.tater.hydrodynamics.registry.*;
 
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -24,6 +27,7 @@ import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.monster.cubemob.AbstractCubeMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -44,12 +48,21 @@ import static java.lang.Math.max;
 import static java.lang.Math.sqrt;
 import static net.minecraft.util.Mth.*;
 
-public class TidalCube extends AbstractCubeMob {
+public class TidalCube extends AbstractCubeMob implements Bucketable {
+
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(TidalCube.class, EntityDataSerializers.BOOLEAN);;
+
     public TidalCube(EntityType<? extends TidalCube> type, Level level) {
         super(type, level);
         setPathfindingMalus(PathType.WATER, 0f);
         moveControl = new TidalCubeMoveControl(this);
         navigation = new AmphibiousPathNavigation(this, level);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder entityData) {
+        super.defineSynchedData(entityData);
+        entityData.define(FROM_BUCKET, false);
     }
 
     @Override
@@ -91,7 +104,7 @@ public class TidalCube extends AbstractCubeMob {
             return InteractionResult.SUCCESS_SERVER;
         }
 
-        return InteractionResult.PASS;
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     @Override
@@ -238,6 +251,62 @@ public class TidalCube extends AbstractCubeMob {
 
     public static AttributeSupplier.Builder createTidalCubeAttributes() {
         return Mob.createMobAttributes().add(Attributes.TEMPT_RANGE, 8);
+    }
+
+    @Override
+    public boolean fromBucket() {
+        return entityData.get(FROM_BUCKET);
+    }
+
+    @Override
+    public void setFromBucket(boolean fromBucket) {
+        entityData.set(FROM_BUCKET, fromBucket);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void saveToBucketTag(ItemStack bucket) {
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
+        bucket.copyFrom(HydrodynamicsModComponents.TIDAL_CUBE_SIZE, this);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void loadFromBucketTag(CompoundTag tag) {
+        Bucketable.loadDefaultDataFromBucketTag(this, tag);
+    }
+
+    public <T> @Nullable T get(final DataComponentType<? extends T> type) {
+        return type == HydrodynamicsModComponents.TIDAL_CUBE_SIZE ? castComponentValue(type, getSize()) : super.get(type);
+    }
+
+    protected void applyImplicitComponents(final DataComponentGetter components) {
+        applyImplicitComponentIfPresent(components, HydrodynamicsModComponents.TIDAL_CUBE_SIZE);
+        super.applyImplicitComponents(components);
+    }
+
+    protected <T> boolean applyImplicitComponent(final DataComponentType<T> type, final T value) {
+        if (type == HydrodynamicsModComponents.TIDAL_CUBE_SIZE) {
+            setSize(castComponentValue(HydrodynamicsModComponents.TIDAL_CUBE_SIZE, value), true);
+            return true;
+        }
+
+        return super.applyImplicitComponent(type, value);
+    }
+
+    @Override
+    public ItemStack getBucketItemStack() {
+        return HydrodynamicsModItems.TIDAL_CUBE_BUCKET.getDefaultInstance();
+    }
+
+    @Override
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_SULFUR_CUBE; // TODO unique sound event
+    }
+
+    @Override
+    public boolean canBePickedUpWithBucket(ItemStack itemStack) {
+        return getSize() <= 3 && (itemStack.is(Items.BUCKET) || Bucketable.super.canBePickedUpWithBucket(itemStack));
     }
 
     private static class TidalCubeTemptGoal extends TemptGoal.ForNonPathfinders {

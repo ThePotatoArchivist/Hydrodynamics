@@ -1,5 +1,6 @@
 package archives.tater.hydrodynamics.client.datagen;
 
+import archives.tater.hydrodynamics.registry.HydrodynamicsModItemIds;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModItemTags;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -19,6 +20,9 @@ public class ModItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider registries) {
+        builder(ConventionalItemTags.ENTITY_DRY_BUCKETS)
+                .add(HydrodynamicsModItemIds.TIDAL_CUBE_BUCKET);
+
         builder(HydrodynamicsModItemTags.DEFAULT_TIDAL_CUBE_FOOD_LOW)
                 .add(BlockItemIds.SEAGRASS)
                 .add(BlockItemIds.KELP);

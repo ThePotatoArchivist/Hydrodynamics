@@ -8,8 +8,10 @@ import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
@@ -27,6 +29,11 @@ public interface HydrodynamicsModComponents {
             .persistent(TidalCubeFood.CODEC)
             .networkSynchronized(TidalCubeFood.STREAM_CODEC)
             .cacheEncoding()
+    );
+
+    DataComponentType<Integer> TIDAL_CUBE_SIZE = register("tidal_cube/size", builder -> builder
+            .persistent(ExtraCodecs.NON_NEGATIVE_INT)
+            .networkSynchronized(ByteBufCodecs.VAR_INT)
     );
 
     static void init() {

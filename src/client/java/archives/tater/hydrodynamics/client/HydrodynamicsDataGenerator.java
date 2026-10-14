@@ -24,6 +24,7 @@ public class HydrodynamicsDataGenerator implements DataGeneratorEntrypoint {
 		var pack = fabricDataGenerator.createPack();
 
 		pack.addProvider(ModLanguageProvider::new);
+		pack.addProvider(ModModelProvider::new);
 
 		pack.addProvider(BuiltRegistryProvider.provider(List.of(
 				Registries.CONTEXT_INT_PROVIDER,

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hydrodynamics:item/tidal_cube_bucket"
+  }
+}

@@ -2,6 +2,7 @@ package archives.tater.hydrodynamics.entity;
 
 import archives.tater.hydrodynamics.registry.HydrodyamicsModPredicates;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModEntityTags;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -48,7 +49,8 @@ public class TidalCube extends AbstractCubeMob {
                 .create(LootContextParamSets.ENTITY_INTERACT)
         ).create(Optional.empty());
 
-        if (!serverLevel.getServer().reloadableRegistries().lookup().getOrThrow(HydrodyamicsModPredicates.CAN_FEED_TIDAL_CUBE).value().test(context)) return InteractionResult.FAIL;
+        if (!serverLevel.getServer().reloadableRegistries().lookup().getOrThrow(HydrodyamicsModPredicates.CAN_FEED_TIDAL_CUBE).value().test(context))
+            return InteractionResult.FAIL;
 
         setSize(getSize() + food.sizes().get(context, 0), true);
         if (food.consume())
@@ -62,10 +64,36 @@ public class TidalCube extends AbstractCubeMob {
     @Override
     public void tick() {
         super.tick();
+
+        collectPassenger();
+
         if (!level().isClientSide() || onGround()) return;
 
         if (random.nextInt(2 * max(1, 6 - getSize())) == 0) // bigger slimes drip more because they have a wider base
             level().addParticle(ParticleTypes.FALLING_WATER, getRandomX(getBbWidth() / 4), getY(), getRandomZ(getBbWidth() / 4), 0, 0, 0);
+    }
+
+    private void collectPassenger() {
+        if (level().isClientSide() || isVehicle()) return;
+
+        var entities = level().getEntities(this, getBoundingBox().inflate(0.2f, 0f, 0.2f), EntitySelector.pushableBy(this));
+        if (entities.isEmpty()) return;
+
+        for (var entity : entities)
+            if (!entity.isPassenger() && canHold(entity) && entity.startRiding(this))
+                break;
+    }
+
+    private boolean canHold(Entity entity) {
+        return entity instanceof LivingEntity
+                && !(entity instanceof TidalCube)
+                && entity.is(HydrodynamicsModEntityTags.TIDAL_CUBE_CAN_HOLD)
+                && getRequiredSize(entity) < getBbWidth();
+    }
+
+    private static float getRequiredSize(Entity entity) {
+        var size = max(entity.getBbWidth(), entity.getBbHeight());
+        return entity.is(HydrodynamicsModEntityTags.REQUIRES_DOUBLE_SIZE_TIDAL_CUBE) ? size + 0.5f : size;
     }
 
     @Override

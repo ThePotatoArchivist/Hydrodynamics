@@ -18,7 +18,10 @@
       "data": {
         "feature": {
           "type": "hydrodynamics:entity",
-          "entity": "minecraft:tropical_fish"
+          "entity": "minecraft:tropical_fish",
+          "tag": {
+            "PersistenceRequired": 1
+          }
         },
         "placement": []
       },

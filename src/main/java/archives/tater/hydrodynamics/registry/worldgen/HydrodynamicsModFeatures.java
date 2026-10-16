@@ -80,11 +80,11 @@ public interface HydrodynamicsModFeatures {
                 0.7f
         ));
 
-        var tidalCubeTag = new CompoundTag();
-        tidalCubeTag.putByte(Mob.TAG_PERSISTENCE_REQUIRED, (byte) 1);
+        var persistentTag = new CompoundTag();
+        persistentTag.putByte(Mob.TAG_PERSISTENCE_REQUIRED, (byte) 1);
         registries.register(TIDE_POOL_CREATURE, new WeightedRandomSelectorFeature(WeightedList.<Holder<PlacedFeature>>builder()
-                .add(simplePlacement(Holder.direct(new EntityFeature(HydrodynamicsModEntities.TIDAL_CUBE, tidalCubeTag))))
-                .add(simplePlacement(Holder.direct(new EntityFeature(EntityTypes.TROPICAL_FISH))), 2)
+                .add(simplePlacement(Holder.direct(new EntityFeature(HydrodynamicsModEntities.TIDAL_CUBE, persistentTag))))
+                .add(simplePlacement(Holder.direct(new EntityFeature(EntityTypes.TROPICAL_FISH, persistentTag))), 2)
                 .build()));
     }
 

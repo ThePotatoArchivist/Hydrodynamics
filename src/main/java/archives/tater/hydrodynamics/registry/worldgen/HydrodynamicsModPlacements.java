@@ -50,7 +50,7 @@ public interface HydrodynamicsModPlacements {
 
         registries.register(TIDE_POOL_CREATURE, new PlacedFeature(features.getOrThrow(HydrodynamicsModFeatures.TIDE_POOL_CREATURE), List.of(
                 CountPlacement.of(16),
-                new RandomChancePlacement(0.7f),
+                new RandomChancePlacement(0.5f),
                 spread(),
                 onHeightmap(Heightmap.Types.WORLD_SURFACE_WG),
                 OffsetPlacement.of(0, -1, 0),

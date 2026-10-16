@@ -220,7 +220,7 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
 
     @Override
     public boolean supportQuadLeash() {
-        return true;
+        return getSize() >= 4;
     }
 
     @Override
@@ -230,7 +230,7 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
 
     @Override
     protected boolean isImmobile() { // Allows leash to apply angular momentum, normally CubeMobMoveControl overrides it
-        return super.isImmobile() || getLeashHolder() != null && getLeashHolder().supportQuadLeashAsHolder();
+        return super.isImmobile() || supportQuadLeash() && getLeashHolder() != null && getLeashHolder().supportQuadLeashAsHolder();
     }
 
     @Override

@@ -1,0 +1,8 @@
+// 26.3	-999999999-01-01T00:00:00	Hydrodynamics/Tags for minecraft:worldgen/biome
+2d1ed1b0004b31ed49569a47ec96d4d1c96de1dd data/c/tags/worldgen/biome/is_sandy.json
+2d1ed1b0004b31ed49569a47ec96d4d1c96de1dd data/c/tags/worldgen/biome/is_temperate/overworld.json
+2d1ed1b0004b31ed49569a47ec96d4d1c96de1dd data/c/tags/worldgen/biome/is_wet/overworld.json
+2d1ed1b0004b31ed49569a47ec96d4d1c96de1dd data/hydrodynamics/tags/worldgen/biome/allows_fish_spawns_shallow.json
+2d1ed1b0004b31ed49569a47ec96d4d1c96de1dd data/minecraft/tags/worldgen/biome/has_structure/trial_chambers.json
+2d1ed1b0004b31ed49569a47ec96d4d1c96de1dd data/minecraft/tags/worldgen/biome/is_beach.json
+2d1ed1b0004b31ed49569a47ec96d4d1c96de1dd data/minecraft/tags/worldgen/biome/is_overworld.json

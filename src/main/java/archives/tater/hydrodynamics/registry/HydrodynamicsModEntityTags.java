@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EntityType;
 
 public interface HydrodynamicsModEntityTags {
 
-    static TagKey<EntityType<?>> create(String path) {
+    private static TagKey<EntityType<?>> create(String path) {
         return TagKey.create(Registries.ENTITY_TYPE, Hydrodynamics.id(path));
     }
 

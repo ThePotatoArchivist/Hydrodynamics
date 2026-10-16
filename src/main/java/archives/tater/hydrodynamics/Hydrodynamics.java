@@ -2,7 +2,7 @@ package archives.tater.hydrodynamics;
 
 import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModEntities;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModEnvironment;
+import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModEnvironment;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModItems;
 
 import net.fabricmc.api.ModInitializer;

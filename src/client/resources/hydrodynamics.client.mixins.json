@@ -1,14 +1,19 @@
 {
-	"required": true,
-	"package": "archives.tater.hydrodynamics.client.mixin",
-	"compatibilityLevel": "JAVA_25",
-	"client": [
-      "HumanoidModRendererMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
-	}
+  "required": true,
+  "package": "archives.tater.hydrodynamics.client.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "HumanoidModRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "mixins": [
+    "OverworldMaterialRulesAccessor",
+    "TropicalFishMixin",
+    "WaterAnimalMixin"
+  ]
 }

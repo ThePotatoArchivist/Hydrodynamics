@@ -7,7 +7,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 public interface HydrodynamicsModItemTags {
-    static TagKey<Item> create(String path) {
+    private static TagKey<Item> create(String path) {
         return TagKey.create(Registries.ITEM, Hydrodynamics.id(path));
     }
 

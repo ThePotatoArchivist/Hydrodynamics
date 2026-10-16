@@ -1,7 +1,12 @@
 package archives.tater.hydrodynamics.entity;
 
-import archives.tater.hydrodynamics.registry.*;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModEntityTags;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModItems;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModPredicates;
+import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModEnvironment;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleOptions;
@@ -14,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,6 +35,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
@@ -52,7 +59,7 @@ import static net.minecraft.util.Mth.*;
 
 public class TidalCube extends AbstractCubeMob implements Bucketable {
 
-    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(TidalCube.class, EntityDataSerializers.BOOLEAN);;
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(TidalCube.class, EntityDataSerializers.BOOLEAN);
 
     public TidalCube(EntityType<? extends TidalCube> type, Level level) {
         super(type, level);
@@ -65,6 +72,12 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
     protected void defineSynchedData(SynchedEntityData.Builder entityData) {
         super.defineSynchedData(entityData);
         entityData.define(FROM_BUCKET, false);
+    }
+
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+        setPersistenceRequired();
+        return super.interact(player, hand, location);
     }
 
     @Override
@@ -180,6 +193,7 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
         return false;
     }
 
+    @Override
     protected void setSpawnSize(final ServerLevelAccessor level, final DifficultyInstance difficulty) {
         setSize(level.getRandom().nextInt(4), true);
     }
@@ -278,15 +292,18 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
         Bucketable.loadDefaultDataFromBucketTag(this, tag);
     }
 
+    @Override
     public <T> @Nullable T get(final DataComponentType<? extends T> type) {
         return type == HydrodynamicsModComponents.TIDAL_CUBE_SIZE ? castComponentValue(type, getSize()) : super.get(type);
     }
 
+    @Override
     protected void applyImplicitComponents(final DataComponentGetter components) {
         applyImplicitComponentIfPresent(components, HydrodynamicsModComponents.TIDAL_CUBE_SIZE);
         super.applyImplicitComponents(components);
     }
 
+    @Override
     protected <T> boolean applyImplicitComponent(final DataComponentType<T> type, final T value) {
         if (type == HydrodynamicsModComponents.TIDAL_CUBE_SIZE) {
             setSize(castComponentValue(HydrodynamicsModComponents.TIDAL_CUBE_SIZE, value), true);
@@ -325,12 +342,18 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
 
     @Override
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.fromBucket();
+        return super.requiresCustomPersistence() || fromBucket();
     }
 
     @Override
     public boolean removeWhenFarAway(final double distSqr) {
-        return !this.fromBucket() && !this.hasCustomName();
+        return !fromBucket() && !hasCustomName() && !isVehicle();
+    }
+
+    public static boolean checkTidalCubeSpawnRules(
+            final EntityType<TidalCube> type, final LevelAccessor level, final EntitySpawnReason spawnReason, final BlockPos pos, final RandomSource random
+    ) {
+        return Mob.checkMobSpawnRules(type, level, spawnReason, pos, random) && level.canSeeSky(pos);
     }
 
     /// @see net.minecraft.world.entity.monster.cubemob.SulfurCube.SulfurCubeTemptGoal
@@ -341,11 +364,13 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
             this.setFlags(EnumSet.of(Flag.LOOK));
         }
 
+        @Override
         protected void stopNavigation() {
             if (mob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl<?> cubeMobMoveControl)
                 cubeMobMoveControl.setWantedMovement(0);
         }
 
+        @Override
         protected void navigateTowards(final Player player) {
             this.mob.lookAt(player, 10.0F, 10.0F);
             if (mob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl<?> cubeMobMoveControl)

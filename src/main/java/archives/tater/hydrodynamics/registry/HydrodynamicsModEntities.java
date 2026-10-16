@@ -7,9 +7,8 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 public interface HydrodynamicsModEntities {
     private static <T extends Entity> EntityType<T> register(ResourceKey<EntityType<?>> key, EntityType.Builder<T> builder) {
@@ -23,7 +22,9 @@ public interface HydrodynamicsModEntities {
             .clientTrackingRange(10)
     );
 
+    @SuppressWarnings("DataFlowIssue") // Intellij seems to be bugging
     static void init() {
+        SpawnPlacements.register(TIDAL_CUBE, SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TidalCube::checkTidalCubeSpawnRules);
         FabricDefaultAttributeRegistry.register(TIDAL_CUBE, TidalCube.createTidalCubeAttributes());
     }
 }

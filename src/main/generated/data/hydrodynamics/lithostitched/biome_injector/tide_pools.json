@@ -1,0 +1,16 @@
+{
+  "type": "lithostitched:replace_partially",
+  "dimension": "minecraft:overworld",
+  "parameters": {
+    "continentalness": [
+      -0.16,
+      -0.1
+    ],
+    "weirdness": [
+      0.2,
+      3.4028235E38
+    ]
+  },
+  "replacement": "hydrodynamics:tide_pools",
+  "targets": "minecraft:beach"
+}

@@ -1,4 +1,4 @@
-package archives.tater.hydrodynamics.registry;
+package archives.tater.hydrodynamics.registry.worldgen;
 
 import archives.tater.hydrodynamics.Hydrodynamics;
 

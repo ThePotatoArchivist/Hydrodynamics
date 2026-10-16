@@ -1,0 +1,61 @@
+{
+  "type": "minecraft:weighted_random_selector",
+  "features": [
+    {
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:seagrass"
+          }
+        },
+        "placement": []
+      },
+      "weight": 5
+    },
+    {
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:kelp",
+            "properties": {
+              "age": "0"
+            }
+          }
+        },
+        "placement": []
+      },
+      "weight": 3
+    },
+    {
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "type": "minecraft:random_block",
+            "blocks": "#minecraft:corals"
+          }
+        },
+        "placement": []
+      },
+      "weight": 3
+    },
+    {
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:sea_pickle",
+            "properties": {
+              "pickles": "1",
+              "waterlogged": "true"
+            }
+          }
+        },
+        "placement": []
+      },
+      "weight": 1
+    }
+  ]
+}

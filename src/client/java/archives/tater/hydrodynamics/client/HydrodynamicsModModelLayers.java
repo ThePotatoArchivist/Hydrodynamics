@@ -17,11 +17,13 @@ public interface HydrodynamicsModModelLayers {
     }
 
     ModelLayerLocation TIDAL_CUBE = create("tidal_cube");
+    ModelLayerLocation TIDAL_CUBE_EYES = create("tidal_cube_eyes");
     ModelLayerLocation TIDAL_CUBE_OUTER = create("tidal_cube", "outer");
     ModelLayerLocation TIDAL_CUBE_INNER = create("tidal_cube", "inner");
 
     static void init() {
-        ModelLayerRegistry.registerModelLayer(TIDAL_CUBE, TidalCubeModel::createMainLayer);
+        ModelLayerRegistry.registerModelLayer(TIDAL_CUBE, TidalCubeModel::createEyesLayer);
+        ModelLayerRegistry.registerModelLayer(TIDAL_CUBE_EYES, TidalCubeModel::createEyesLayer);
         ModelLayerRegistry.registerModelLayer(TIDAL_CUBE_OUTER, TidalCubeModel::createOuterBodyLayer);
         ModelLayerRegistry.registerModelLayer(TIDAL_CUBE_INNER, TidalCubeModel::createInnerBodyLayer);
     }

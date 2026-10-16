@@ -1,19 +1,21 @@
 package archives.tater.hydrodynamics.client.model;
 
+import archives.tater.hydrodynamics.client.render.state.TidalCubeRenderState;
+
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.model.monster.slime.SlimeModel;
 
-public class TidalCubeModel extends SlimeModel {
+public class TidalCubeModel extends EntityModel<TidalCubeRenderState> {
     public TidalCubeModel(final ModelPart root) {
         super(root);
     }
 
-    public static LayerDefinition createMainLayer() {
+    public static LayerDefinition createEyesLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
         root.addOrReplaceChild("right_eye", CubeListBuilder.create().texOffs(32, 0).addBox(-3.25F, 18.0F, -3.5F, 2.0F, 2.0F, 2.0F), PartPose.ZERO);

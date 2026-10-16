@@ -19,6 +19,7 @@ public class TidalCubeRenderer extends AbstractCubeMobRenderer<TidalCube, TidalC
         super(context, new TidalCubeModel(context.bakeLayer(HydrodynamicsModModelLayers.TIDAL_CUBE)));
         this.addLayer(new TidalCubeOuterLayer(this, context.getModelSet()));
         this.addLayer(new TidalCubeInnerLayer(this, context.getModelSet()));
+        this.addLayer(new TidalCubeEyesLayer(this));
     }
 
     @Override

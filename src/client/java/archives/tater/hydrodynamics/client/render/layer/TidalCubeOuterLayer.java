@@ -26,7 +26,7 @@ public class TidalCubeOuterLayer extends RenderLayer<TidalCubeRenderState, Tidal
         if (state.isInvisible && !appearsGlowingWithInvisibility) return;
 
         int overlayCoords = LivingEntityRenderer.getOverlayCoords(state, 0.0F);
-        submitNodeCollector.order(1).submitModel(
+        submitNodeCollector.order(3).submitModel(
                 model,
                 state,
                 poseStack,

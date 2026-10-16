@@ -204,6 +204,11 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
     }
 
     @Override
+    protected void setUpSplitCube(AbstractCubeMob cubeMob, int halfSize, float xd, float zd) {
+        super.setUpSplitCube(cubeMob, max(1, getSize() - 2), xd, zd);
+    }
+
+    @Override
     protected @Nullable ParticleOptions getParticleType() {
         return ParticleTypes.SPLASH;
     }

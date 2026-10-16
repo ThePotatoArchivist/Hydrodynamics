@@ -33,7 +33,7 @@ public class ModLithostitchedProvider extends FabricDynamicRegistryProvider {
     protected void configure(HolderLookup.Provider registries, Entries entries) {
         entries.add(ResourceKey.create(LithostitchedRegistries.BIOME_INJECTOR, Hydrodynamics.id("tide_pools")), BiomeInjector.builder(Level.OVERWORLD)
                 .replacePartially(registries.getOrThrow(Biomes.BEACH), registries.getOrThrow(HydrodynamicsModBiomes.TIDE_POOLS), ParameterBuilder.create()
-                        .climateMin(BiomeInjector.ClimateParameter.WEIRDNESS, 0.2f)
+                        .climateMin(BiomeInjector.ClimateParameter.WEIRDNESS, 0.25f)
                         .climateRange(BiomeInjector.ClimateParameter.CONTINENTALNESS, -0.16f, -0.1f)
         ));
 

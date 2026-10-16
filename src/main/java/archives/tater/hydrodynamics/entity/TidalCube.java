@@ -32,6 +32,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -307,6 +309,28 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
     @Override
     public boolean canBePickedUpWithBucket(ItemStack itemStack) {
         return getSize() <= 3 && (itemStack.is(Items.BUCKET) || Bucketable.super.canBePickedUpWithBucket(itemStack));
+    }
+
+    @Override
+    protected void addAdditionalSaveData(final ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("FromBucket", this.fromBucket());
+    }
+
+    @Override
+    protected void readAdditionalSaveData(final ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setFromBucket(input.getBooleanOr("FromBucket", false));
+    }
+
+    @Override
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.fromBucket();
+    }
+
+    @Override
+    public boolean removeWhenFarAway(final double distSqr) {
+        return !this.fromBucket() && !this.hasCustomName();
     }
 
     /// @see net.minecraft.world.entity.monster.cubemob.SulfurCube.SulfurCubeTemptGoal

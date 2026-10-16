@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:weighted_random_selector",
+  "features": [
+    {
+      "data": {
+        "feature": {
+          "type": "hydrodynamics:entity",
+          "entity": "hydrodynamics:tidal_cube",
+          "tag": {
+            "PersistenceRequired": 1
+          }
+        },
+        "placement": []
+      },
+      "weight": 1
+    },
+    {
+      "data": {
+        "feature": {
+          "type": "hydrodynamics:entity",
+          "entity": "minecraft:tropical_fish"
+        },
+        "placement": []
+      },
+      "weight": 2
+    }
+  ]
+}

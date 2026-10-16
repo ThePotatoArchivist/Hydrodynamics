@@ -1,17 +1,22 @@
 package archives.tater.hydrodynamics.registry.worldgen;
 
 import archives.tater.hydrodynamics.Hydrodynamics;
+import archives.tater.hydrodynamics.feature.EntityFeature;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModBlockTags;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModEntities;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,6 +43,7 @@ public interface HydrodynamicsModFeatures {
     ResourceKey<Feature> TIDE_POOL = create("tide_pool");
     ResourceKey<Feature> TIDE_POOL_WATER_VEGETATION = create("tide_pool_water_vegetation");
     ResourceKey<Feature> TIDE_POOL_AIR_VEGETATION = create("tide_pool_air_vegetation");
+    ResourceKey<Feature> TIDE_POOL_CREATURE = create("tide_pool_creature");
 
     static void bootstrap(BootstrapContext<Feature> registries) {
         var blocks = registries.lookup(Registries.BLOCK);
@@ -73,6 +79,13 @@ public interface HydrodynamicsModFeatures {
                 UniformInt.of(4, 7),
                 0.7f
         ));
+
+        var tidalCubeTag = new CompoundTag();
+        tidalCubeTag.putByte(Mob.TAG_PERSISTENCE_REQUIRED, (byte) 1);
+        registries.register(TIDE_POOL_CREATURE, new WeightedRandomSelectorFeature(WeightedList.<Holder<PlacedFeature>>builder()
+                .add(simplePlacement(Holder.direct(new EntityFeature(HydrodynamicsModEntities.TIDAL_CUBE, tidalCubeTag))))
+                .add(simplePlacement(Holder.direct(new EntityFeature(EntityTypes.TROPICAL_FISH))), 2)
+                .build()));
     }
 
     private static BlockState nonWaterlogged(Block block) {

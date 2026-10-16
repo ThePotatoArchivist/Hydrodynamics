@@ -9,9 +9,8 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
-import net.minecraft.world.level.levelgen.placement.CountPlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.material.Fluids;
 
 import java.util.List;
 
@@ -26,6 +25,7 @@ public interface HydrodynamicsModPlacements {
 
     ResourceKey<PlacedFeature> TIDE_POOL = create("tide_pool");
     ResourceKey<PlacedFeature> TIDE_POOL_AIR_VEGETATION = create("tide_pool_air_vegetation");
+    ResourceKey<PlacedFeature> TIDE_POOL_CREATURE = create("tide_pool_creatures");
 
     static void bootstrap(BootstrapContext<PlacedFeature> registries) {
         var features = registries.lookup(Registries.FEATURE);
@@ -46,6 +46,16 @@ public interface HydrodynamicsModPlacements {
                         BlockPredicate.matchesTag(Direction.DOWN, HydrodynamicsModBlockTags.TIDE_POOLS_AIR_VEGETATION_BASE),
                         BlockPredicate.ONLY_IN_AIR_PREDICATE
                 ))
+        )));
+
+        registries.register(TIDE_POOL_CREATURE, new PlacedFeature(features.getOrThrow(HydrodynamicsModFeatures.TIDE_POOL_CREATURE), List.of(
+                CountPlacement.of(16),
+                new RandomChancePlacement(0.7f),
+                spread(),
+                onHeightmap(Heightmap.Types.WORLD_SURFACE_WG),
+                OffsetPlacement.of(0, -1, 0),
+                biome(),
+                BlockPredicateFilter.forPredicate(BlockPredicate.matchesFluids(Fluids.WATER))
         )));
     }
 }

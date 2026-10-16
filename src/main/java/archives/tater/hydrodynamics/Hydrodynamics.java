@@ -4,6 +4,7 @@ import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModEntities;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModEnvironment;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModItems;
+import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModFeatureTypes;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -29,6 +30,7 @@ public class Hydrodynamics implements ModInitializer {
 		HydrodynamicsModEntities.init();
 		HydrodynamicsModItems.init();
 		HydrodynamicsModComponents.init();
+		HydrodynamicsModFeatureTypes.init();
 		HydrodynamicsModEnvironment.init();
 	}
 

@@ -59,9 +59,10 @@ public interface HydrodynamicsModBiomes {
         addDefaultExtraVegetation(generation, true);
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, HydrodynamicsModPlacements.TIDE_POOL);
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, HydrodynamicsModPlacements.TIDE_POOL_AIR_VEGETATION);
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, HydrodynamicsModPlacements.TIDE_POOL_CREATURE);
 
         return baseBiome(0.8F, 0.4F)
-                .specialEffects(new BiomeSpecialEffects.Builder().waterColor(4159204).build())
+                .specialEffects(new BiomeSpecialEffects.Builder().waterColor(0x43D5EE).build())
                 .mobSpawnSettings(mobs.build())
                 .generationSettings(generation.build())
                 .build();

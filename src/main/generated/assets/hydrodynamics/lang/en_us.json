@@ -2,5 +2,10 @@
   "entity.hydrodynamics.tidal_cube": "Tidal Cube",
   "gamerule.hydrodynamics.tidal_cube_max_size": "Maximum tidal cube size",
   "item.hydrodynamics.tidal_cube_bucket": "Bucket of Tidal Cube",
-  "item.hydrodynamics.tidal_cube_spawn_egg": "Tidal Cube Spawn Egg"
+  "item.hydrodynamics.tidal_cube_spawn_egg": "Tidal Cube Spawn Egg",
+  "subtitles.hydrodynamics.entity.tidal_cube.death": "Tidal Cube dies",
+  "subtitles.hydrodynamics.entity.tidal_cube.eat": "Tidal Cube eats",
+  "subtitles.hydrodynamics.entity.tidal_cube.hurt": "Tidal Cube hurts",
+  "subtitles.hydrodynamics.entity.tidal_cube.splash": "Tidal Cube splashes",
+  "subtitles.hydrodynamics.item.bucket.fill_tidal_cube": "Tidal Cube scooped"
 }

@@ -1,10 +1,7 @@
 package archives.tater.hydrodynamics;
 
-import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModEntities;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModGameRules;
+import archives.tater.hydrodynamics.registry.*;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModEnvironment;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModItems;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModFeatureTypes;
 
 import net.fabricmc.api.ModInitializer;
@@ -29,6 +26,7 @@ public class Hydrodynamics implements ModInitializer {
 		// Proceed with mild caution.
 
 		HydrodynamicsModGameRules.init();
+		HydrodynamicsModSounds.init();
 		HydrodynamicsModEntities.init();
 		HydrodynamicsModItems.init();
 		HydrodynamicsModComponents.init();

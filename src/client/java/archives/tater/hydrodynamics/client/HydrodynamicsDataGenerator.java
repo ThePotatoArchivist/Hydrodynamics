@@ -33,6 +33,7 @@ public class HydrodynamicsDataGenerator implements DataGeneratorEntrypoint {
 
 		pack.addProvider(ModLanguageProvider::new);
 		pack.addProvider(ModModelProvider::new);
+		pack.addProvider(ModSoundsProvider::new);
 
 		pack.addProvider(BuiltRegistryProvider.provider(List.of(
 				Registries.CONTEXT_INT_PROVIDER,

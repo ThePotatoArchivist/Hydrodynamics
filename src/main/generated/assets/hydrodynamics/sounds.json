@@ -1,0 +1,65 @@
+{
+  "entity.tidal_cube.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.slime.death"
+      }
+    ],
+    "subtitle": "subtitles.hydrodynamics.entity.tidal_cube.death"
+  },
+  "entity.tidal_cube.eat": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.small_sulfur_cube.eat"
+      }
+    ],
+    "subtitle": "subtitles.hydrodynamics.entity.tidal_cube.eat"
+  },
+  "entity.tidal_cube.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.slime.hurt"
+      }
+    ],
+    "subtitle": "subtitles.hydrodynamics.entity.tidal_cube.hurt"
+  },
+  "entity.tidal_cube.jump": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.slime.jump"
+      }
+    ],
+    "subtitle": "subtitles.hydrodynamics.entity.tidal_cube.splash"
+  },
+  "entity.tidal_cube.squish": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.slime.squish"
+      }
+    ],
+    "subtitle": "subtitles.hydrodynamics.entity.tidal_cube.splash"
+  },
+  "item.bucket.empty_tidal_cube": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:item.bucket.empty_sulfur_cube"
+      }
+    ],
+    "subtitle": "subtitles.item.bucket.empty"
+  },
+  "item.bucket.fill_tidal_cube": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:item.bucket.fill_sulfur_cube"
+      }
+    ],
+    "subtitle": "subtitles.hydrodynamics.item.bucket.fill_tidal_cube"
+  }
+}

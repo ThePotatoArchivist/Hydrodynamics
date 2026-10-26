@@ -6,7 +6,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.material.Fluids;
@@ -23,7 +22,7 @@ public interface HydrodynamicsModItems {
     Item TIDAL_CUBE_BUCKET = register(HydrodynamicsModItemIds.TIDAL_CUBE_BUCKET, properties -> new MobBucketItem(
             HydrodynamicsModEntities.TIDAL_CUBE,
             Fluids.EMPTY,
-            SoundEvents.BUCKET_EMPTY_SULFUR_CUBE,
+            HydrodynamicsModSounds.BUCKET_EMPTY_TIDAL_CUBE,
             properties
     ), new Item.Properties()
             .stacksTo(1)

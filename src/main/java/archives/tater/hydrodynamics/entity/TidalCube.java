@@ -1,9 +1,6 @@
 package archives.tater.hydrodynamics.entity;
 
-import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModEntityTags;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModGameRules;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModItems;
+import archives.tater.hydrodynamics.registry.*;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModEnvironment;
 
 import net.minecraft.core.BlockPos;
@@ -17,7 +14,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -53,10 +49,10 @@ import java.util.EnumSet;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 import static java.lang.Math.sqrt;
 import static net.minecraft.util.Mth.*;
+import static net.minecraft.util.Mth.atan2;
 
 public class TidalCube extends AbstractCubeMob implements Bucketable {
 
@@ -114,7 +110,7 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
             setSize(min(getSize() + food.sizes().get(context, 0), maxSize), true);
             if (food.consume())
                 stack.consume(1, player);
-            // TODO sound
+            playSound(HydrodynamicsModSounds.TIDAL_CUBE_EAT);
             serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY(0.5), getZ(), 8, getBbWidth() / 2, getBbHeight() / 2, getBbWidth() / 2, 0.0);
 
             return InteractionResult.SUCCESS_SERVER;
@@ -249,26 +245,24 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
         return false;
     }
 
-    // TODO unique sounds
-
     @Override
     protected SoundEvent getJumpSound() {
-        return SoundEvents.SLIME_JUMP;
+        return HydrodynamicsModSounds.TIDAL_CUBE_JUMP;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.SLIME_HURT;
+        return HydrodynamicsModSounds.TIDAL_CUBE_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.SLIME_DEATH;
+        return HydrodynamicsModSounds.TIDAL_CUBE_DEATH;
     }
 
     @Override
     protected SoundEvent getSquishSound() {
-        return SoundEvents.SLIME_SQUISH;
+        return HydrodynamicsModSounds.TIDAL_CUBE_SQUISH;
     }
 
     public static AttributeSupplier.Builder createTidalCubeAttributes() {
@@ -326,7 +320,7 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
 
     @Override
     public SoundEvent getPickupSound() {
-        return SoundEvents.BUCKET_FILL_SULFUR_CUBE; // TODO unique sound event
+        return HydrodynamicsModSounds.BUCKET_FILL_TIDAL_CUBE;
     }
 
     @Override

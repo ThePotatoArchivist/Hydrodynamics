@@ -2,9 +2,11 @@ package archives.tater.hydrodynamics.mixin;
 
 import archives.tater.hydrodynamics.registry.HydrodynamicsModEntityTags;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.tags.FluidTags;
@@ -27,7 +29,7 @@ public abstract class EntityMixin {
 			at = @At("RETURN")
 	)
 	private boolean submergePassenger(boolean original) {
-		return original || getVehicle() != null && getVehicle().is(HydrodynamicsModEntityTags.SUBMERGES_PASSENGERS);
+		return original || vehicleSubmerges();
 	}
 
 	@ModifyReturnValue(
@@ -35,6 +37,19 @@ public abstract class EntityMixin {
 			at = @At("RETURN")
 	)
 	private boolean submergePassenger(boolean original, TagKey<Fluid> type) {
-		return original || type == FluidTags.WATER && getVehicle() != null && getVehicle().is(HydrodynamicsModEntityTags.SUBMERGES_PASSENGERS);
+		return original || type == FluidTags.WATER && vehicleSubmerges();
+	}
+
+	@ModifyExpressionValue(
+			method = "applyEffectsFromBlocks(Ljava/util/List;)V",
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInRain()Z")
+	)
+	private boolean extinguish(boolean original) {
+		return original || vehicleSubmerges();
+	}
+
+	@Unique
+    private boolean vehicleSubmerges() {
+		return getVehicle() != null && getVehicle().is(HydrodynamicsModEntityTags.SUBMERGES_PASSENGERS);
 	}
 }

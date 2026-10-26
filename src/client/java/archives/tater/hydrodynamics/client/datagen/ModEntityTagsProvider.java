@@ -42,7 +42,6 @@ public class ModEntityTagsProvider extends FabricTagsProvider.EntityTypeTagsProv
                 .add(EntityTypeIds.DOLPHIN)
                 .add(EntityTypeIds.SQUID)
                 .add(EntityTypeIds.GLOW_SQUID)
-                .add(EntityTypeIds.AXOLOTL)
                 .add(EntityTypeIds.NAUTILUS)
                 .add(EntityTypeIds.ZOMBIE_NAUTILUS);
 

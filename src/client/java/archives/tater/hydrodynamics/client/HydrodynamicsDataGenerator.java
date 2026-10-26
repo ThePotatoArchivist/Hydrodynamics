@@ -2,7 +2,6 @@ package archives.tater.hydrodynamics.client;
 
 import archives.tater.hydrodynamics.client.datagen.*;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModBiomes;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModPredicates;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModIntProviders;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModFeatures;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModPlacements;
@@ -19,7 +18,6 @@ public class HydrodynamicsDataGenerator implements DataGeneratorEntrypoint {
 	@Override
 	public void buildReloadableRegistry(RegistrySetBuilder registryBuilder) {
 		registryBuilder.add(Registries.CONTEXT_INT_PROVIDER, HydrodynamicsModIntProviders::bootstrap);
-		registryBuilder.add(Registries.PREDICATE, HydrodynamicsModPredicates::bootstrap);
 	}
 
 	@Override
@@ -38,7 +36,6 @@ public class HydrodynamicsDataGenerator implements DataGeneratorEntrypoint {
 
 		pack.addProvider(BuiltRegistryProvider.provider(List.of(
 				Registries.CONTEXT_INT_PROVIDER,
-				Registries.PREDICATE,
 				Registries.BIOME,
 				Registries.FEATURE,
 				Registries.PLACED_FEATURE

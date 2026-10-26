@@ -1,6 +1,7 @@
 package archives.tater.hydrodynamics.client.datagen;
 
 import archives.tater.hydrodynamics.registry.HydrodynamicsModEntities;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModGameRules;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModItems;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -20,5 +21,6 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(HydrodynamicsModEntities.TIDAL_CUBE, "Tidal Cube");
         translationBuilder.add(HydrodynamicsModItems.TIDAL_CUBE_SPAWN_EGG, "Tidal Cube Spawn Egg");
         translationBuilder.add(HydrodynamicsModItems.TIDAL_CUBE_BUCKET, "Bucket of Tidal Cube");
+        translationBuilder.add(HydrodynamicsModGameRules.TIDAL_CUBE_MAX_SIZE.getDescriptionId(), "Maximum tidal cube size");
     }
 }

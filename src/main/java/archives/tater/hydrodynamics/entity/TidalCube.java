@@ -2,8 +2,8 @@ package archives.tater.hydrodynamics.entity;
 
 import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModEntityTags;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModGameRules;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModItems;
-import archives.tater.hydrodynamics.registry.HydrodynamicsModPredicates;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModEnvironment;
 
 import net.minecraft.core.BlockPos;
@@ -54,6 +54,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static java.lang.Math.sqrt;
 import static net.minecraft.util.Mth.*;
 
@@ -99,6 +100,9 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
         var food = stack.get(HydrodynamicsModComponents.TIDAL_CUBE_FOOD);
         if (food != null) {
             if (!(level() instanceof ServerLevel serverLevel)) return InteractionResult.CONSUME;
+            int maxSize = serverLevel.getGameRules().get(HydrodynamicsModGameRules.TIDAL_CUBE_MAX_SIZE);
+            if (getSize() + 1 > maxSize)
+                return InteractionResult.FAIL;
 
             var context = new LootContext.Builder(new LootParams.Builder(serverLevel)
                     .withParameter(LootContextParams.TARGET_ENTITY, this)
@@ -107,10 +111,7 @@ public class TidalCube extends AbstractCubeMob implements Bucketable {
                     .create(LootContextParamSets.ENTITY_INTERACT)
             ).create(Optional.empty());
 
-            if (!serverLevel.getServer().reloadableRegistries().lookup().getOrThrow(HydrodynamicsModPredicates.CAN_FEED_TIDAL_CUBE).value().test(context))
-                return InteractionResult.FAIL;
-
-            setSize(getSize() + food.sizes().get(context, 0), true);
+            setSize(min(getSize() + food.sizes().get(context, 0), maxSize), true);
             if (food.consume())
                 stack.consume(1, player);
             // TODO sound

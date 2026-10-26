@@ -2,6 +2,7 @@ package archives.tater.hydrodynamics;
 
 import archives.tater.hydrodynamics.registry.HydrodynamicsModComponents;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModEntities;
+import archives.tater.hydrodynamics.registry.HydrodynamicsModGameRules;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModEnvironment;
 import archives.tater.hydrodynamics.registry.HydrodynamicsModItems;
 import archives.tater.hydrodynamics.registry.worldgen.HydrodynamicsModFeatureTypes;
@@ -27,6 +28,7 @@ public class Hydrodynamics implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
+		HydrodynamicsModGameRules.init();
 		HydrodynamicsModEntities.init();
 		HydrodynamicsModItems.init();
 		HydrodynamicsModComponents.init();

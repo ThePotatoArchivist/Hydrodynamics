@@ -1,5 +1,6 @@
 {
   "entity.hydrodynamics.tidal_cube": "Tidal Cube",
+  "gamerule.hydrodynamics.tidal_cube_max_size": "Maximum tidal cube size",
   "item.hydrodynamics.tidal_cube_bucket": "Bucket of Tidal Cube",
   "item.hydrodynamics.tidal_cube_spawn_egg": "Tidal Cube Spawn Egg"
 }

@@ -6,11 +6,11 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -35,20 +35,14 @@ public record EntityFeature(EntityType<?> entity, CompoundTag tag) implements Fe
 
     @Override
     public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
-        var realLevel = switch (level) {
-            case Level level1 -> level1;
-            case WorldGenRegion worldGenRegion -> worldGenRegion.getLevel();
-            default -> null;
-        };
-        if (realLevel == null) return false;
-
+        var serverLevel = level.getLevel();
         try (var reporter = new ProblemReporter.ScopedCollector(Hydrodynamics.LOGGER)) {
-            var entity = EntityType.create(entity(), TagValueInput.create(reporter, level.registryAccess(), tag), realLevel, EntitySpawnReason.CHUNK_GENERATION).orElse(null);
+            var entity = EntityType.create(entity(), TagValueInput.create(reporter, level.registryAccess(), tag), serverLevel, EntitySpawnReason.CHUNK_GENERATION).orElse(null);
             if (entity == null) return false;
             entity.snapTo(origin, entity.getYRot(), entity.getXRot());
             if (entity instanceof Mob mob)
-                mob.finalizeSpawn(level, level.getCurrentDifficultyAt(origin), EntitySpawnReason.CHUNK_GENERATION, null);
-            level.addFreshEntity(entity);
+                mob.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(origin), EntitySpawnReason.CHUNK_GENERATION, null);
+            serverLevel.addFreshEntity(entity);
             return true;
         }
     }
